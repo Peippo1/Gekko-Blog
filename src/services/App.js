@@ -2,7 +2,9 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import fire from "./fire.js";
-import ListAllPosts from "./components/blogPost/ListAllPosts"
+import Login from './components/session/Login';
+import ListAllPosts from "./components/blogPost/ListAllPosts";
+import AddPost from "./components/blogPost/AddPost";
 
 // loggin authentication with fire & state
 function App() {
@@ -11,12 +13,11 @@ function App() {
   fire.auth().onAuthStateChanged((user) => {
     return user ? setIsLoggedIn(true) : setIsLoggedIn(false);
   });
-  console.log("logged in?", isLoggedIn);
   // signout
-  const signOut = () => {
-    fire.auth().signOut()
-};
-
+  function signOut() {
+    fire.auth().signOut();
+  }
+  console.log(isLoggedIn);
   return (
     <div className="App">
       <Router>
@@ -28,15 +29,21 @@ function App() {
               </Route>
             </Switch>
           </>
-        ) : (
+        ) 
+        : (
+          <>
           <span onClick={signOut}>
             <a href="#">Sign out</a>
           </span>
           <Switch>
-            <Route path="/">
-              <ListAllPosts/>
+            <Route path="/add-post">
+              <AddPost />
             </Route>
+            <Route path="/">
+              <ListAllPosts />
+            </Route>              
           </Switch>
+          </>
         )}
       </Router>
     </div>
